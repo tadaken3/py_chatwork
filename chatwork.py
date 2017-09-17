@@ -6,7 +6,7 @@ import requests
 import logging
 
 def main():
-    logger = init_logger()
+    logger = get_logger()
     logger.info('start')
     psr = argparse.ArgumentParser()
     psr.add_argument('-a', '--apikey', default='#Your Chatwork API KEY')
@@ -28,12 +28,18 @@ def main():
         logger.warning(r.text)
     logger.info('end')
 
-def init_logger():
+def get_logger():
     logger = logging.getLogger(__name__)
-    logger.setLevel(10)
+    logger.setLevel('INFO')
+    
+    fh = logging.FileHandler('chatwork.log')
+    logger.addHandler(fh)
+    
     sh = logging.StreamHandler()
     logger.addHandler(sh)
+    
     formatter = logging.Formatter('%(asctime)s:%(lineno)d:%(levelname)s:%(message)s')
+    fh.setFormatter(formatter)
     sh.setFormatter(formatter)
     return logger
 
